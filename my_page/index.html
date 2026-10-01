@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Для тебя ❤️</title>
+  <meta name="description" content="Маленькое послание для тебя">
+  <style>
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #faf7f4;
+      color: #292524;
+      line-height: 1.6;
+    }
+
+    .page {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 22px;
+    }
+
+    .hero {
+      text-align: center;
+      background:
+        radial-gradient(circle at 50% 25%, rgba(255,255,255,.95), transparent 45%),
+        #faf7f4;
+    }
+
+    .heart {
+      font-size: 42px;
+      margin-bottom: 18px;
+      animation: heartbeat 2.2s ease-in-out infinite;
+    }
+
+    h1 {
+      font-family: Georgia, serif;
+      font-size: clamp(42px, 12vw, 72px);
+      font-weight: 400;
+      margin: 0 0 20px;
+    }
+
+    .subtitle {
+      max-width: 420px;
+      margin: 0 auto;
+      color: #6b625e;
+      font-size: 18px;
+    }
+
+    .scroll {
+      margin-top: 55px;
+      color: #8a7d76;
+      font-size: 14px;
+      animation: float 2s ease-in-out infinite;
+    }
+
+    .story {
+      background: #fff;
+    }
+
+    .content {
+      width: min(680px, 100%);
+      text-align: center;
+    }
+
+    .content p {
+      font-family: Georgia, serif;
+      font-size: clamp(23px, 5vw, 32px);
+      line-height: 1.45;
+      margin: 0 0 42px;
+      font-weight: 400;
+    }
+
+    .photo {
+      width: 100%;
+      max-width: 520px;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      border-radius: 22px;
+      display: block;
+      margin: 0 auto 24px;
+      box-shadow: 0 18px 50px rgba(40, 30, 25, .13);
+      background: #eee8e4;
+    }
+
+    .caption {
+      font-family: Georgia, serif;
+      font-size: 19px;
+      color: #655c57;
+      margin-bottom: 60px;
+    }
+
+    .music {
+      background: #292524;
+      color: #fff;
+      text-align: center;
+    }
+
+    .music .content {
+      max-width: 520px;
+    }
+
+    .music-icon {
+      font-size: 44px;
+      margin-bottom: 20px;
+    }
+
+    .music h2 {
+      font-family: Georgia, serif;
+      font-size: 36px;
+      font-weight: 400;
+      margin: 0 0 12px;
+    }
+
+    .music p {
+      font-size: 17px;
+      color: #d6d0cc;
+      margin-bottom: 30px;
+    }
+
+    .song-card {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 20px;
+      padding: 24px;
+      margin: 0 auto 28px;
+    }
+
+    .song-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .artist {
+      color: #c9c2bd;
+      margin-top: 4px;
+    }
+
+    .button {
+      display: inline-block;
+      text-decoration: none;
+      color: #292524;
+      background: #fff;
+      padding: 14px 28px;
+      border-radius: 999px;
+      font-weight: 600;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      opacity: .9;
+    }
+
+    .ending {
+      text-align: center;
+      background: #faf7f4;
+    }
+
+    .ending h2 {
+      font-family: Georgia, serif;
+      font-size: clamp(32px, 8vw, 50px);
+      font-weight: 400;
+      margin: 0 0 28px;
+    }
+
+    .ending p {
+      max-width: 480px;
+      margin: 0 auto 16px;
+      color: #655c57;
+      font-size: 18px;
+    }
+
+    .signature {
+      margin-top: 45px;
+      font-family: Georgia, serif;
+      font-size: 26px;
+    }
+
+    .small-heart {
+      margin-top: 28px;
+      font-size: 26px;
+    }
+
+
+    /* --- Soft page animations --- */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition:
+        opacity .9s ease,
+        transform .9s cubic-bezier(.22, 1, .36, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .photo-wrap {
+      position: relative;
+      width: min(520px, 100%);
+      margin: 0 auto 24px;
+    }
+
+    .photo-wrap::after {
+      content: "♡";
+      position: absolute;
+      right: 16px;
+      bottom: 14px;
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,.78);
+      color: #8f7770;
+      font-size: 21px;
+      opacity: 0;
+      transform: scale(.7);
+      transition: opacity .5s ease .2s, transform .5s ease .2s;
+      box-shadow: 0 5px 18px rgba(40,30,25,.10);
+      pointer-events: none;
+    }
+
+    .photo-wrap.visible::after {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .photo-wrap .photo {
+      margin: 0;
+      transition:
+        transform .8s cubic-bezier(.22, 1, .36, 1),
+        box-shadow .8s ease;
+    }
+
+    .photo-wrap:hover .photo {
+      transform: scale(1.018);
+      box-shadow: 0 24px 60px rgba(40, 30, 25, .18);
+    }
+
+    .floating-hearts {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .hero,
+    .ending {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .floating-heart {
+      position: absolute;
+      bottom: -40px;
+      font-size: 18px;
+      opacity: 0;
+      animation: rise-heart linear infinite;
+    }
+
+    .floating-heart:nth-child(1) { left: 12%; animation-duration: 10s; animation-delay: 1s; }
+    .floating-heart:nth-child(2) { left: 30%; animation-duration: 13s; animation-delay: 4s; font-size: 13px; }
+    .floating-heart:nth-child(3) { left: 52%; animation-duration: 11s; animation-delay: 2s; }
+    .floating-heart:nth-child(4) { left: 72%; animation-duration: 14s; animation-delay: 6s; font-size: 14px; }
+    .floating-heart:nth-child(5) { left: 88%; animation-duration: 12s; animation-delay: 8s; }
+
+    .hero > div:not(.floating-hearts),
+    .ending > div {
+      position: relative;
+      z-index: 1;
+    }
+
+    .scroll {
+      cursor: pointer;
+    }
+
+    .small-heart {
+      animation: gentle-heart 2.8s ease-in-out infinite;
+    }
+
+    @keyframes rise-heart {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: .22;
+      }
+      75% {
+        opacity: .12;
+      }
+      100% {
+        transform: translateY(-110vh) rotate(18deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes gentle-heart {
+      0%, 100% { transform: scale(1); opacity: .75; }
+      50% { transform: scale(1.16); opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      10% { transform: scale(1.12); }
+      20% { transform: scale(1); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(7px); }
+    }
+
+    @media (min-width: 700px) {
+      section {
+        padding: 80px 40px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+
+    <section class="hero">
+      <div class="floating-hearts" aria-hidden="true">
+        <span class="floating-heart">♡</span>
+        <span class="floating-heart">♡</span>
+        <span class="floating-heart">♡</span>
+        <span class="floating-heart">♡</span>
+        <span class="floating-heart">♡</span>
+      </div>
+      <div class="reveal">
+        <div class="heart">❤️</div>
+        <h1>Для тебя</h1>
+        <p class="subtitle">
+          Я хотел оставить тебе кое-что маленькое,
+          пока меня нет рядом в этот тяжелый для тебя день.
+        </p>
+        <div class="scroll">прокрути вниз ↓</div>
+      </div>
+    </section>
+
+    <section class="story">
+      <div class="content">
+
+        <p class="reveal">
+          Мы знаем друг друга уже несколько лет... Но наша совместная история началась совсем недавно.
+          Я и представить не мог, как сильно начну скучать по тебе
+        </p>
+
+        <div class="photo-wrap reveal">
+          <img class="photo" src="photos/photo1.jpg" alt="Наша фотография">
+        </div>
+
+        <div class="caption reveal">
+          Все еще не понимаю как мне досталась такая булочка кокосовая
+        </div>
+
+        <p class="reveal">
+          Понимаешь, вот этому ↓ досталась ты
+        </p>
+
+        <div class="photo-wrap reveal">
+          <img class="photo" src="photos/photo2.jpg" alt="Наша фотография">
+        </div>
+
+        <div class="caption reveal">
+          Хотя...
+        </div>
+
+        <p class="reveal">
+          Мы стоим друг друга :)
+        </p>
+
+        <div class="photo-wrap reveal">
+          <img class="photo" src="photos/photo3.jpg" alt="Наша фотография">
+        </div>
+
+        <div class="caption reveal">
+          Мне очень нравится что ты не стесняешься быть смешной рядом со мной.
+        </div>
+
+        <p class="reveal">
+          (я знаю что тебе больше нравится когда я говорю "смешная", а не "красивая")
+        </p>
+
+        <div class="photo-wrap reveal">
+          <img class="photo" src="photos/photo4.jpg" alt="Наша фотография">
+        </div>
+
+        <div class="caption reveal">
+          И мне нравится что ты меня принимаешь таким, какой я есть
+        </div>
+
+        <p class="reveal">
+          А именно - кринж
+        </p>
+
+        <div class="photo-wrap reveal">
+          <img class="photo" src="photos/photo5.jpg" alt="Наша фотография">
+        </div>
+
+        <div class="caption reveal">
+          Люблю тебя и очень жду
+        </div>
+
+        <p class="reveal">
+          (хоть ты и кринжиха❤️)
+        </p>
+
+        <div class="photo-wrap reveal">
+          <img class="photo" src="photos/photo6.jpg" alt="Наша фотография">
+        </div>
+
+      </div>
+    </section>
+
+    <section class="ending">
+      <div class="floating-hearts" aria-hidden="true">
+        <span class="floating-heart">♡</span>
+        <span class="floating-heart">♡</span>
+        <span class="floating-heart">♡</span>
+        <span class="floating-heart">♡</span>
+        <span class="floating-heart">♡</span>
+      </div>
+      <div class="reveal">
+        <h2>И последнее...</h2>
+
+        <p class="reveal">
+          Если после этой страницы ты всё ещё скучаешь —
+          значит, нам действительно пора увидеться.
+        </p>
+
+        <p class="reveal">
+          А пока просто знай:
+          я думаю о тебе ❤️
+        </p>
+
+        <div class="small-heart">♡</div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const items = document.querySelectorAll(".reveal");
+
+      if (!("IntersectionObserver" in window)) {
+        items.forEach(item => item.classList.add("visible"));
+        return;
+      }
+
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+
+          entry.target.classList.add("visible");
+          obs.unobserve(entry.target);
+        });
+      }, {
+        threshold: 0.14,
+        rootMargin: "0px 0px -40px 0px"
+      });
+
+      items.forEach(item => observer.observe(item));
+    });
+  </script>
+
+</body>
+</html>
